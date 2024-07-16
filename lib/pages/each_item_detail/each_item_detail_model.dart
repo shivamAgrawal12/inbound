@@ -19,6 +19,8 @@ class EachItemDetailModel extends FlutterFlowModel<EachItemDetailWidget> {
   Completer<ApiCallResponse>? apiRequestCompleter;
   // Stores action output result for [Backend Call - API (inbound data)] action in each_item_detail widget.
   ApiCallResponse? apiResultu83;
+  // Stores action output result for [Backend Call - API (inbound data)] action in each_item_detail widget.
+  ApiCallResponse? apiResultu;
   // State field(s) for TextField_value widget.
   FocusNode? textFieldValueFocusNode;
   TextEditingController? textFieldValueTextController;

@@ -425,7 +425,7 @@ class _NewItemScanerWidgetState extends State<NewItemScanerWidget> {
                                                     0,
                                                     0,
                                                     0,
-                                                    10.0,
+                                                    50.0,
                                                   ),
                                                   shrinkWrap: true,
                                                   scrollDirection:
@@ -532,13 +532,13 @@ class _NewItemScanerWidgetState extends State<NewItemScanerWidget> {
                                                                                         valueOrDefault<String>(
                                                                                           getJsonField(
                                                                                                     recordsItem,
-                                                                                                    r'''$.slot_id''',
+                                                                                                    r'''$.slot_friendly_name''',
                                                                                                   ) ==
                                                                                                   null
                                                                                               ? '-'
                                                                                               : getJsonField(
                                                                                                   recordsItem,
-                                                                                                  r'''$.slot_id''',
+                                                                                                  r'''$.slot_friendly_name''',
                                                                                                 ).toString(),
                                                                                           '-',
                                                                                         ),

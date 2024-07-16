@@ -40,24 +40,26 @@ class _EachItemDetailWidgetState extends State<EachItemDetailWidget> {
         duration: const Duration(milliseconds: 1500),
         callback: (timer) async {
           setState(() => _model.apiRequestCompleter = null);
-          _model.apiResultu83 = await InboundGroupGroup.inboundDataCall.call(
-            orderStatus: 'tray_ready_to_use',
-            userRecordId: currentUserData?.userid,
-          );
-
-          if (!(_model.apiResultu83?.succeeded ?? true)) {
-            context.pushNamed(
-              'successfull',
-              extra: <String, dynamic>{
-                kTransitionInfoKey: const TransitionInfo(
-                  hasTransition: true,
-                  transitionType: PageTransitionType.fade,
-                  duration: Duration(milliseconds: 0),
-                ),
-              },
-            );
-
+          await Future.wait([
+            Future(() async {
+              _model.apiResultu83 =
+                  await InboundGroupGroup.inboundDataCall.call(
+                orderStatus: 'tray_ready_to_use',
+                userRecordId: currentUserData?.userid,
+              );
+            }),
+            Future(() async {
+              _model.apiResultu = await InboundGroupGroup.inboundDataCall.call(
+                orderStatus: 'order_placed',
+                userRecordId: currentUserData?.userid,
+              );
+            }),
+          ]);
+          if (!((_model.apiResultu83?.succeeded ?? true) ||
+              (_model.apiResultu?.succeeded ?? true))) {
             _model.instantTimer?.cancel();
+
+            context.pushNamed('successfull');
           }
         },
         startImmediately: true,
@@ -97,7 +99,6 @@ class _EachItemDetailWidgetState extends State<EachItemDetailWidget> {
                 future:
                     (_model.apiRequestCompleter ??= Completer<ApiCallResponse>()
                           ..complete(InboundGroupGroup.inboundDataCall.call(
-                            orderStatus: 'tray_ready_to_use',
                             userRecordId: currentUserData?.userid,
                           )))
                         .future,
@@ -449,7 +450,7 @@ class _EachItemDetailWidgetState extends State<EachItemDetailWidget> {
                                                               getJsonField(
                                                                 containerInboundDataResponse
                                                                     .jsonBody,
-                                                                r'''$.records[0].slot_id''',
+                                                                r'''$.records[0].slot_friendly_name''',
                                                               )?.toString(),
                                                               '-',
                                                             ),
